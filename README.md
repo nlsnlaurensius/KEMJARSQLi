@@ -37,3 +37,47 @@ node sqli_server.js
 http://localhost:3001
 ``` 
 
+## Simulasi Serangan (POC)
+
+Secara default aplikasi berjalan di mode **Vulnerable**.
+
+1. Buka halaman login.
+2. Masukkan payload berikut di kolom **Username**:
+
+```
+admin' --
+```
+
+> Ada spasi setelah `--`.
+
+3. Isi password dengan sembarang angka, misalnya `123`.
+4. Klik **Sign In**.  
+Jika masih rentan, login akan berhasil tanpa password.
+
+---
+
+## Cara Memperbaiki (Mitigasi)
+
+Untuk mengaktifkan versi aman:
+
+1. Buka file `server_sqli.js`.
+2. Temukan bagian bertanda **[VERSI RENTAN]**, lalu komentar seluruh bloknya.
+3. Temukan bagian **[VERSI AMAN]**, lalu hapus tanda komentar pada blok tersebut.
+4. Restart server dengan perintah:
+
+```
+Ctrl + C
+node server_sqli.js
+```
+
+Setelah itu coba payload yang sama. Login akan gagal jika patch berhasil diterapkan.
+
+---
+
+## Struktur Project
+
+Project ini dibuat sederhana dengan satu file utama:
+
+```
+server_sqli.js → berisi setup server, dummy database SQLite, template HTML, dan logika login (Vulnerable & Secure)
+```
